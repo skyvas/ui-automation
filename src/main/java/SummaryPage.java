@@ -1,15 +1,20 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class SummaryPage {
-    WebDriver driver;
+    private WebDriver driver;
 
+    // Constructor to initialize the WebDriver
     public SummaryPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public WebElement verifySummaryPage() {
-        return driver.findElement(By.cssSelector("*[data-test='checkout-summary-container']"));
+    // Locator for the total label div
+    private By totalLabel = By.cssSelector("div.summary_total_label[data-test='total-label']");
+
+    // Method to retrieve the total value as a string (without the "Total: $" part)
+    public String getTotalValue() {
+        String totalText = driver.findElement(totalLabel).getText();
+        return totalText.replace("Total: $", "").trim();
     }
 }

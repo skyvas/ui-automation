@@ -31,6 +31,10 @@ public class TestCheckoutProcess extends BaseTest {
         checkoutPage.clickContinue();
 
         // Verify summary page
-        Assert.assertNotNull(summaryPage.verifySummaryPage(), "Summary page not found");
+        // Get the total value from the SummaryPage
+        String totalValue = summaryPage.getTotalValue();
+
+        // Assert that the total value is "10.79"
+        Assert.assertEquals(totalValue, "10.79", "Total value is not as expected!");
     }
 }

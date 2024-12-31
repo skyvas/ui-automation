@@ -14,8 +14,8 @@
         <maven.compiler.target>23</maven.compiler.target>
         <maven.compiler.source>23</maven.compiler.source>
 
-        <headless>true</headless>
-        <webdriver.chrome.driver>C:\Drivers\Chrome\chromedriver.exe</webdriver.chrome.driver>
+        <headless>false</headless>
+        <webdriver.chrome.driver>chromedriver.exe</webdriver.chrome.driver>
     </properties>
 
     <dependencies>
