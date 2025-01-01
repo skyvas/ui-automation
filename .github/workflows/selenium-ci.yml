@@ -24,12 +24,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      # Step 3: Set up Chrome for Selenium tests
-      - name: Set up ChromeDriver
-        uses: actions/setup-chromedriver@v2
-
-      - name: Install Chrome
-        run: sudo apt-get install -y google-chrome-stable
+      # Step 3: Install Chrome and ChromeDriver
+      - name: Install Chrome and ChromeDriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION%.*}")
+          wget -N "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip -d ~/bin/
+          rm chromedriver_linux64.zip
+          echo "chromedriver.path=~/bin/chromedriver" >> src/test/resources/config.properties
 
       # Step 4: Create config.properties dynamically
       - name: Create config.properties
