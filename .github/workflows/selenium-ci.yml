@@ -1,6 +1,5 @@
 name: Selenium CI
 
-# Run this workflow on pushes and pull requests to the main branch
 on:
   push:
     branches:
@@ -22,7 +21,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          java-version: '11' # Specify your project's Java version
+          java-version: '11'
           distribution: 'temurin'
 
       # Step 3: Set up Chrome for Selenium tests
@@ -32,7 +31,16 @@ jobs:
       - name: Install Chrome
         run: sudo apt-get install -y google-chrome-stable
 
-      # Step 4: Cache Maven dependencies
+      # Step 4: Create config.properties dynamically
+      - name: Create config.properties
+        run: |
+          echo "username=${{ secrets.USERNAME }}" > src/test/resources/config.properties
+          echo "password=${{ secrets.PASSWORD }}" >> src/test/resources/config.properties
+          echo "password=${{ secrets.CHROMEDRIVER_PATH }}" >> src/test/resources/config.properties
+          echo "password=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
+          echo "password=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
+
+      # Step 5: Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -41,10 +49,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 5: Install Maven dependencies
+      # Step 6: Install Maven dependencies
       - name: Install Dependencies
         run: mvn install
 
-      # Step 6: Run Selenium tests
+      # Step 7: Run Selenium tests
       - name: Run Tests
         run: mvn test
