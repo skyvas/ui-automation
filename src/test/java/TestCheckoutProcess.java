@@ -27,7 +27,7 @@ public class TestCheckoutProcess extends BaseTest {
 
         checkoutPage.enterFirstName("a");
         checkoutPage.enterLastName("b");
-        checkoutPage.enterPostalCode("c");
+        checkoutPage.enterPostalCode("d");
         checkoutPage.clickContinue();
 
         // Verify summary page
