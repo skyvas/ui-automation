@@ -5,7 +5,7 @@ public class TestCheckoutProcess extends BaseTest {
 
     @Test
     public void testCheckoutProcess() {
-        driver.get("https://www.saucedemo.com");
+        driver.get(config.getProperty("test_url"));
 
         LoginPage loginPage = new LoginPage(driver);
         InventoryPage inventoryPage = new InventoryPage(driver);
@@ -19,7 +19,7 @@ public class TestCheckoutProcess extends BaseTest {
         loginPage.clickLogin();
 
         // Add item to cart
-        inventoryPage.addToCart("*[data-test='add-to-cart-sauce-labs-bike-light']");
+        inventoryPage.addAnItemToCart();
         inventoryPage.goToCart();
 
         // Checkout

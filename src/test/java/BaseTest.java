@@ -10,12 +10,16 @@ public class BaseTest {
 
     @BeforeMethod
     public void setUp() {
+        //Load config
+        config = new ConfigReader();
+
         // Get the headless mode property (defaults to false)
-        String isHeadless = System.getProperty("headless", "false");
+        String isHeadless = System.getProperty("headless", config.getProperty("headless_mode"));
 
         // Manually specify the path to the ChromeDriver
         // Make sure to update the path to your local chromedriver.exe
-        System.setProperty("webdriver.chrome.driver", "C:\\Drivers\\Chrome\\chromedriver.exe");
+
+        System.setProperty("webdriver.chrome.driver", config.getProperty("chromedriver_path"));
 
         // Set ChromeOptions for headless mode
         ChromeOptions options = new ChromeOptions();
@@ -30,7 +34,6 @@ public class BaseTest {
 
         // Initialize the ChromeDriver with options
         driver = new ChromeDriver(options);
-        config = new ConfigReader();
 
         // Log to indicate headless or non-headless mode
         System.out.println("Running in " + (Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal") + " mode.");

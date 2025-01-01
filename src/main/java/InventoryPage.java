@@ -8,8 +8,8 @@ public class InventoryPage {
         this.driver = driver;
     }
 
-    public void addToCart(String itemSelector) {
-        driver.findElement(By.cssSelector(itemSelector)).click();
+    public void addAnItemToCart() {
+        driver.findElement(By.cssSelector("*[data-test='add-to-cart-sauce-labs-bike-light']")).click();
     }
 
     public void goToCart() {

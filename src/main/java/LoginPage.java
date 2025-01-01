@@ -19,4 +19,18 @@ public class LoginPage {
     public void clickLogin() {
         driver.findElement(By.cssSelector("*[data-test='login-button']")).click();
     }
+
+    // Nested class representing the header section
+//    public class Header {
+//        @FindBy(id = "logoutButton")
+//        private WebElement logoutButton;
+//
+//        public void clickLogout() {
+//            logoutButton.click();
+//        }
+//    }
+
+
+
+
 }
