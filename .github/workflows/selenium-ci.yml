@@ -1,0 +1,50 @@
+name: Selenium CI
+
+# Run this workflow on pushes and pull requests to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Java
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11' # Specify your project's Java version
+          distribution: 'temurin'
+
+      # Step 3: Set up Chrome for Selenium tests
+      - name: Set up ChromeDriver
+        uses: actions/setup-chromedriver@v2
+
+      - name: Install Chrome
+        run: sudo apt-get install -y google-chrome-stable
+
+      # Step 4: Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 5: Install Maven dependencies
+      - name: Install Dependencies
+        run: mvn install
+
+      # Step 6: Run Selenium tests
+      - name: Run Tests
+        run: mvn test
