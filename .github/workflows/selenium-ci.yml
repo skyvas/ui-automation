@@ -16,6 +16,9 @@ jobs:
       # Step 1: Check out the repository code
       - name: Checkout Code
         uses: actions/checkout@v3
+      
+      - name: Print Code Download Path
+        run: echo "Code downloaded to ${{ github.workspace }}"
 
       # Step 2: Set up Java
       - name: Set up Java
@@ -44,7 +47,7 @@ jobs:
         run: |
           echo "username=${{ secrets.USERNAME }}" >> src/test/resources/config.properties
           echo "password=${{ secrets.PASSWORD }}" >> src/test/resources/config.properties
-          echo "chromedrive_path=${{ secrets.CHROMEDRIVER_PATH }}" >> src/test/resources/config.properties
+          echo "chromedriver_path=${{ secrets.CHROMEDRIVER_PATH }}" >> src/test/resources/config.properties
           echo "headless_mode=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
           echo "test_url=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
 
