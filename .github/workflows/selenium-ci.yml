@@ -39,7 +39,7 @@ jobs:
         run: sudo apt-get install -y chromium-chromedriver
 
       - name: Set ChromeDriver path
-        run: echo "chromedriver.path=$(which chromedriver)" >> src/test/resources/config.properties
+        run: echo "chromedriver_path=$(which chromedriver)" >> src/test/resources/config.properties
 
 
       # Step 4: Create config.properties dynamically
@@ -47,7 +47,6 @@ jobs:
         run: |
           echo "username=${{ secrets.USERNAME }}" >> src/test/resources/config.properties
           echo "password=${{ secrets.PASSWORD }}" >> src/test/resources/config.properties
-          echo "chromedriver_path=${{ secrets.CHROMEDRIVER_PATH }}" >> src/test/resources/config.properties
           echo "headless_mode=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
           echo "test_url=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
 
