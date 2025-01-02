@@ -48,6 +48,9 @@ jobs:
           echo "headless_mode=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
           echo "test_url=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
 
+      - name: Print config.properties
+        run: cat src/test/resources/config.properties
+     
       # Step 5: Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v3
