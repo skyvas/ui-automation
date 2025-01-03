@@ -1,98 +1,93 @@
-# Selenium Project with Maven
+# SeleniumBase
 
-This repository contains a Selenium project structured to follow best practices for test automation. The project uses Maven as the build tool and organizes resources and test code for easy management and scalability.
+This repository contains a Selenium-based test automation framework. The project is designed to be modular, maintainable, and easy to use for automated UI testing.
 
-## Folder Structure
+## Project Structure
 
-```
-selenium-project/
+```plaintext
+seleniumbase/
 ├── src/
-│   ├── resources/
-│   │   └── config.properties
 │   └── test/
-│       └── java/
-│           ├── tests/
-│           ├── pageobjects/
-│           └── utils/
-│               └── ConfigReader.java
+│       ├── java/
+│       │   ├── tests/         # Test cases
+│       │   ├── utils/         # Utility classes (e.g., ConfigReader)
+│       │   └── pageobjects/   # Page Object classes
+│       └── resources/         # Resource files (e.g., config.properties)
+├── .gitignore                  # Files to ignore in Git
+├── pom.xml                     # Maven configuration file
+└── README.md                   # Project documentation
 ```
 
-### Description of Folders and Files
+## Key Components
 
-- **src/resources/config.properties**
-      - Contains configuration details such as URLs, browser types, and other environment-specific properties.
+### `src/test/resources/config.properties`
+This file contains the configuration settings for the tests, such as URLs, credentials, and environment-specific details.
 
-- **src/test/java/tests/**
-      - Contains test classes where all the test cases are written.
+### `ConfigReader` Class
+Located in `src/test/java/utils/ConfigReader.java`, this utility class reads properties from the `config.properties` file.
 
-- **src/test/java/pageobjects/**
-      - Contains Page Object Model (POM) classes for interacting with web pages.
+#### Example:
+```java
+String url = ConfigReader.getProperty("url");
+System.out.println("URL: " + url);
+```
 
-- **src/test/java/utils/ConfigReader.java**
-      - A utility class to read and parse the `config.properties` file.
+### Page Objects
+Page Object classes are located in `src/test/java/pageobjects`. Each class represents a page or component of the application and encapsulates the locators and actions for that page.
 
-## Prerequisites
+#### Example:
+```java
+public class LoginPage {
+    WebDriver driver;
 
-Before running the tests, ensure you have the following installed:
+    By usernameField = By.id("username");
+    By passwordField = By.id("password");
+    By loginButton = By.id("loginBtn");
 
-- [Java JDK 8 or higher](https://www.oracle.com/java/technologies/javase-downloads.html)
-- [Maven](https://maven.apache.org/)
-- A compatible web driver (e.g., ChromeDriver, GeckoDriver)
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
 
-## How to Run the Tests
+    public void login(String username, String password) {
+        driver.findElement(usernameField).sendKeys(username);
+        driver.findElement(passwordField).sendKeys(password);
+        driver.findElement(loginButton).click();
+    }
+}
+```
 
-1. Clone the repository:
+### Test Cases
+Test case classes are located in `src/test/java/tests`. Each test class is responsible for verifying a specific functionality of the application under test.
+
+## Setup Instructions
+
+1. **Clone the Repository**
    ```bash
-   git clone <repository_url>
-   cd selenium-project
+   git clone https://github.com/your-repository/seleniumbase.git
+   cd seleniumbase
    ```
 
-2. Update the `config.properties` file with the appropriate values for your environment.
+2. **Set Up Dependencies**
+   - Using Maven:
+     ```bash
+     mvn install
+     ```
 
-3. Run the tests:
-      - Using Maven:
-        ```bash
-        mvn test
-        ```
-      - Directly in the IDE:
-            1. Open `tests.TestCheckoutProcess.java`.
-            2. Right-click and select Run.
+3. **Update `config.properties`**
+   Modify the `src/test/resources/config.properties` file to include your environment-specific configurations.
 
-## Key Features
-
-- **Maven Integration**: Manage dependencies and run tests seamlessly.
-- **Configurable Properties**: Easily switch between environments by editing the `config.properties` file.
-- **Utility Classes**: Reusable components like `ConfigReader` simplify common tasks.
-
-## Key Files and Their Purpose
-
-1. **Page Classes (POM):**
-
-2. **ConfigReader.java**: Utility class to read configuration properties from `config.properties`.
-
-3. **tests.TestCheckoutProcess.java**: Main test class to execute the end-to-end test case.
-
-4. **config.properties**: Stores application-specific settings like username and password.
-
-## Notes
-
-- Ensure the browser version and ChromeDriver version are compatible.
-- Modify the test script if testing on a different application or platform.
+4. **Run Tests**
+   - Using Maven:
+     ```bash
+     mvn test
+     ```
 
 ## Troubleshooting
 
-### Common Errors
-
-1. **`config.properties` not found:**
-      - Ensure `config.properties` is placed in `src/test/resources/`.
-      - Check the `ConfigReader` implementation for the correct file path.
-
-2. **WebDriverException:**
-      - Ensure ChromeDriver is installed and available in your PATH.
-
-3. **Test Failures:**
-      - Check locators (webElement selectors) in page classes for any changes on the target website.
-
-## Contributions
-
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+### Error: "Unable to find config.properties"
+- Ensure that the `config.properties` file is in `src/test/resources/`.
+- Verify that the `resources` folder is marked as a resource root in your IDE.
+- Confirm that the `ConfigReader` class is using the correct path:
+  ```java
+  InputStream input = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties");
+  ```
