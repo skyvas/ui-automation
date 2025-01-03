@@ -41,7 +41,6 @@ jobs:
       - name: Set ChromeDriver path
         run: echo "chromedriver_path=$(which chromedriver)" >> src/test/resources/config.properties
 
-
       # Step 4: Create config.properties dynamically
       - name: Create config.properties
         run: |
@@ -69,3 +68,10 @@ jobs:
       # Step 7: Run Selenium tests
       - name: Run Tests
         run: mvn test
+
+      # Step 8: Upload Surefire reports as artifacts
+      - name: Upload Surefire reports as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
