@@ -65,10 +65,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <!-- Optional: Configure the output directory for the reports -->
-                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-                </configuration>
             </plugin>
         </plugins>
     </build>
