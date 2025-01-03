@@ -63,7 +63,7 @@ Test case classes are located in `src/test/java/tests`. Each test class is respo
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-repository/seleniumbase.git
+   git clone https://github.com/akash-plato/seleniumbase.git
    cd seleniumbase
    ```
 
@@ -74,7 +74,7 @@ Test case classes are located in `src/test/java/tests`. Each test class is respo
      ```
 
 3. **Update `config.properties`**
-   Modify the `src/test/resources/config.properties` file to include your environment-specific configurations.
+   Modify the `src/test/resources/config.properties` file to include your environment-specific configurations from github variables.
 
 4. **Run Tests**
    - Using Maven:
