@@ -1,3 +1,10 @@
+package tests;
+
+import pageobjects.LoginPage;
+import pageobjects.InventoryPage;
+import pageobjects.CartPage;
+import pageobjects.CheckoutPage;
+import pageobjects.SummaryPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
