@@ -68,6 +68,7 @@ jobs:
 
       # Step 8: Upload Surefire reports as artifacts
       - name: Upload Surefire reports as artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
