@@ -71,5 +71,6 @@ jobs:
           run: |
             TIMESTAMP=$(date +"%Y%m%d%H%M%S")
             ZIP_NAME="surefire-reports-$TIMESTAMP.zip"
+            echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
           name: ${{ env.ZIP_NAME }}
           path: ${{ env.ZIP_NAME }}
