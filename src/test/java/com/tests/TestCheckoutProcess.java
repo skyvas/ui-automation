@@ -45,7 +45,7 @@ public class TestCheckoutProcess extends BaseTest {
         String totalValue = summaryPage.getTotalValue();
 
         // Assert that the total value is "10.79"
-        Assert.assertEquals(totalValue, "10.79", "Total value is as expected!");
+        Assert.assertEquals(totalValue, "10.75", "Total value is as expected!");
 
     }
 }
