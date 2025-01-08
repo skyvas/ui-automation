@@ -64,13 +64,21 @@ jobs:
         run: mvn test
 
       # Step 8: Upload Surefire reports as artifacts
-      - name: Upload Surefire reports as artifacts
+      - name: Rename and Upload Surefire reports
+        if: always()
+        run: |
+          TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+          ORIGINAL_FILE="surefire-reports.zip"  # Replace with the actual file name if different
+          RENAMED_FILE="surefire-reports-$TIMESTAMP.zip"
+          mv "$ORIGINAL_FILE" "$RENAMED_FILE"
+          echo "RENAMED_FILE=$RENAMED_FILE" >> $GITHUB_ENV
+        env:
+          ORIGINAL_FILE: surefire-reports.zip
+      
+      - name: Upload Renamed Surefire reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          run: |
-            TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-            ZIP_NAME="surefire-reports-$TIMESTAMP.zip"
-            echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
-          name: ${{ env.ZIP_NAME }}
-          path: ${{ env.ZIP_NAME }}
+          name: Surefire-Reports
+          path: ${{ env.RENAMED_FILE }}
+
