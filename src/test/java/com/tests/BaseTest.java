@@ -1,6 +1,8 @@
-package tests;
-import utils.ConfigReader;
+package com.tests;
+import com.utils.BrowserUtil;
+import com.utils.ConfigReader;
 
+import com.utils.WaitUtil;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,6 +12,8 @@ import org.testng.annotations.BeforeMethod;
 public class BaseTest {
     protected WebDriver driver;
     protected ConfigReader config;
+    protected WaitUtil wait;
+    protected BrowserUtil browserUtil ;
 
     @BeforeMethod
     public void setUp() {
@@ -37,6 +41,8 @@ public class BaseTest {
 
         // Initialize the ChromeDriver with options
         driver = new ChromeDriver(options);
+        browserUtil = new BrowserUtil(driver);             // Initialize BrowserUtil
+
 
         // Log to indicate headless or non-headless mode
         System.out.println("Running in " + (Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal") + " mode.");
