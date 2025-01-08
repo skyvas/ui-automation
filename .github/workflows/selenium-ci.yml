@@ -45,8 +45,6 @@ jobs:
           echo "password=${{ secrets.PASSWORD }}" >> src/test/resources/config.properties
           echo "headless_mode=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
           echo "test_url=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
-          TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-          ZIP_NAME="surefire-reports-$TIMESTAMP.zip"
      
       # Step 5: Cache Maven dependencies
       - name: Cache Maven dependencies
@@ -70,7 +68,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ZIP_NAME }}
+          name: surefire-reports
           path: target/surefire-reports
 
 
