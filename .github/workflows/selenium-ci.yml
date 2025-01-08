@@ -45,6 +45,8 @@ jobs:
           echo "password=${{ secrets.PASSWORD }}" >> src/test/resources/config.properties
           echo "headless_mode=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
           echo "test_url=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
+          TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+          ZIP_NAME="surefire-reports-$TIMESTAMP.zip"
      
       # Step 5: Cache Maven dependencies
       - name: Cache Maven dependencies
@@ -64,23 +66,11 @@ jobs:
         run: mvn test
 
       # Step 8: Upload Surefire reports as artifacts
-      - name: Rename and Upload Surefire reports
-        if: always()
-        run: |
-          TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-          ORIGINAL_FILE="surefire-reports.zip"  # Replace with the actual file name if different
-          RENAMED_FILE="surefire-reports-$TIMESTAMP.zip"
-          cd target/
-          mv "$ORIGINAL_FILE" "$RENAMED_FILE"
-          echo "RENAMED_FILE=target/$RENAMED_FILE" >> $GITHUB_ENV
-        env:
-          ORIGINAL_FILE: surefire-reports.zip
-      
-      - name: Upload Renamed Surefire reports
+      - name: Upload Surefire reports as artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.RENAMED_FILE }}
-          path: ${{ env.RENAMED_FILE }}
+          name: ${{ env.ZIP_NAME }}
+          path: target/surefire-reports
 
 
