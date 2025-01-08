@@ -70,8 +70,9 @@ jobs:
           TIMESTAMP=$(date +"%Y%m%d%H%M%S")
           ORIGINAL_FILE="surefire-reports.zip"  # Replace with the actual file name if different
           RENAMED_FILE="surefire-reports-$TIMESTAMP.zip"
+          cd target/
           mv "$ORIGINAL_FILE" "$RENAMED_FILE"
-          echo "RENAMED_FILE=$RENAMED_FILE" >> $GITHUB_ENV
+          echo "RENAMED_FILE=target/$RENAMED_FILE" >> $GITHUB_ENV
         env:
           ORIGINAL_FILE: surefire-reports.zip
       
@@ -79,6 +80,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Surefire-Reports
+          name: ${{ env.RENAMED_FILE }}
           path: ${{ env.RENAMED_FILE }}
+
 
