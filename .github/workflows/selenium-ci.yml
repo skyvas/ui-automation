@@ -68,8 +68,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          run: |
-            TIMESTAMP=$(date +"%Y%m%d%H%M%S")
-            ZIP_NAME="surefire-reports-$TIMESTAMP.zip"
-          name: ${{ env.ZIP_NAME }}
-          path: ${{ env.ZIP_NAME }}
+          name: surefire-reports
+          path: target/surefire-reports
+
+
