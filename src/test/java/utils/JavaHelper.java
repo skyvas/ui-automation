@@ -1,4 +1,4 @@
-package com.utils;
+package utils;
 
 //A helper class with commonly used methods, such as generating random data.
 

@@ -1,7 +1,7 @@
-package com.tests;
-import com.utils.BrowserUtil;
-import com.utils.ConfigReader;
-import com.utils.ScreenshotUtil;
+package tests.smoke;
+import utils.BrowserUtil;
+import utils.ConfigReader;
+import utils.ScreenshotUtil;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

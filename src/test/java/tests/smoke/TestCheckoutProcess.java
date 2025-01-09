@@ -1,11 +1,10 @@
-package com.tests;
+package tests.smoke;
 
-import com.pageobjects.LoginPage;
-import com.pageobjects.InventoryPage;
-import com.pageobjects.CartPage;
-import com.pageobjects.CheckoutPage;
-import com.pageobjects.SummaryPage;
-import com.utils.BrowserUtil;
+import pageobjects.LoginPage;
+import pageobjects.InventoryPage;
+import pageobjects.CartPage;
+import pageobjects.CheckoutPage;
+import pageobjects.SummaryPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

@@ -7,15 +7,25 @@ This repository contains a Selenium-based test automation framework. The project
 ```plaintext
 seleniumbase/
 ├── src/
+│   ├── main/ # For Application code
 │   └── test/
 │       ├── java/
-│       │   ├── tests/         # Test cases
-│       │   ├── utils/         # Utility classes (e.g., ConfigReader)
-│       │   └── pageobjects/   # Page Object classes
-│       └── resources/         # Resource files (e.g., config.properties)
-├── .gitignore                  # Files to ignore in Git
-├── pom.xml                     # Maven configuration file
-└── README.md                   # Project documentation
+│       │   ├── tests/
+│       │   │   ├── smoke/         # Smoke test cases
+│       │   │   ├── regression/    # Regression test cases
+│       │   ├── utils/             # Utility classes (e.g., ConfigReader, Helpers)
+│       │   ├── pageobjects/       # Page Object classes
+│       │   └── exceptions/        # Custom exception classes
+│       ├── resources/
+│           └── config.properties   # Test environment config
+
+├── .github/
+│   └── workflows/
+│       └── selenium-ci.yml         # GitHub Actions pipeline
+├── .gitignore                      # Files to ignore in Git
+├── pom.xml                         # Maven configuration file (with profiles and versioning)
+└── README.md                       # Enhanced project documentation
+
 ```
 
 ## Key Components
