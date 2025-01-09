@@ -63,7 +63,7 @@ public class BaseTest {
         System.err.println("Error: " + e.getMessage());
 
         // Define the screenshot path
-        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/" + methodName + "_FAILED.png";
+        String screenshotPath = "/target/screenshots/" + methodName + "_FAILED.png";
 
         // Capture a screenshot
         try {

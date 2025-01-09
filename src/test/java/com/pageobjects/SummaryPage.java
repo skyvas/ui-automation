@@ -12,7 +12,7 @@ public class SummaryPage {
     }
 
     // Locator for the total label div
-    private By totalLabel = By.cssSelector("div.summary_total_label[data-test='total-label']");
+    private By totalLabel = By.cssSelector("div.summary_total_label[data-test='total-labe']");
 
     // Method to retrieve the total value as a string (without the "Total: $" part)
     public String getTotalValue() {
