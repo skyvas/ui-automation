@@ -79,11 +79,7 @@ jobs:
           name: screenshots
           path: target/screenshots
           if-no-files-found: continue  # Continue even if no files are found
-          compression-level: 6
-          overwrite: false
-          include-hidden-files: false
-        env:
-          IS_FOLDER_EMPTY: [ -z "$(ls -A target/screenshots)" ] && echo true || echo false
+
 
 
 
