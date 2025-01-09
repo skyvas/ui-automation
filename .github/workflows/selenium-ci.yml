@@ -78,7 +78,6 @@ jobs:
         with:
           name: screenshots
           path: target/screenshots
-          if-no-files-found: continue  # Continue even if no files are found
 
 
 
