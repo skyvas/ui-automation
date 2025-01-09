@@ -1,4 +1,4 @@
-package tests.smoke;
+package base;
 import utils.BrowserUtil;
 import utils.ConfigReader;
 import utils.ScreenshotUtil;

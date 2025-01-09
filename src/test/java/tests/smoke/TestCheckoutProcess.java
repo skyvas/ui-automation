@@ -1,5 +1,6 @@
 package tests.smoke;
 
+import base.BaseTest;
 import pageobjects.LoginPage;
 import pageobjects.InventoryPage;
 import pageobjects.CartPage;
