@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BaseTest {
     protected WebDriver driver;
@@ -63,7 +65,8 @@ public class BaseTest {
         System.err.println("Error: " + e.getMessage());
 
         // Define the screenshot path
-        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/" + methodName + "_FAILED.png";
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/" + "screenshot_"+ methodName + "_" + timestamp + ".png";
 
         // Capture a screenshot
         try {
