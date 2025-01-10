@@ -1,8 +1,11 @@
 package base;
+
 import utils.BrowserUtil;
 import utils.ConfigReader;
 import utils.ScreenshotUtil;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,6 +18,9 @@ public class BaseTest {
     protected WebDriver driver;
     protected ConfigReader config;
     protected BrowserUtil browserUtil;
+
+    // Logger instance with protected visibility
+    protected static final Logger logger = LogManager.getLogger(BaseTest.class);
 
     @BeforeMethod
     public void setUp() {
@@ -43,13 +49,14 @@ public class BaseTest {
         browserUtil = new BrowserUtil(driver);  // Initialize BrowserUtil
 
         // Log to indicate headless or non-headless mode
-        System.out.println("Running in " + (Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal") + " mode.");
+        logger.info("Running in " + (Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal") + " mode.");
     }
 
     @AfterMethod
     public void tearDown() {
         if (driver != null) {
             driver.quit();
+            logger.info("Browser closed.");
         }
     }
 
@@ -61,8 +68,8 @@ public class BaseTest {
      */
     protected void handleTestException(String methodName, Exception e) {
         // Log the exception
-        System.err.println("Test failed in method: " + methodName);
-        System.err.println("Error: " + e.getMessage());
+        logger.error("Test failed in method: " + methodName);
+        logger.error("Error: " + e.getMessage());
 
         // Define the screenshot path
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -71,9 +78,9 @@ public class BaseTest {
         // Capture a screenshot
         try {
             ScreenshotUtil.takeScreenshot(driver, screenshotPath);
-            System.out.println("Screenshot saved at: " + screenshotPath);
+            logger.info("Screenshot saved at: " + screenshotPath);
         } catch (Exception screenshotException) {
-            System.err.println("Failed to capture screenshot: " + screenshotException.getMessage());
+            logger.error("Failed to capture screenshot: " + screenshotException.getMessage());
         }
 
         // Rethrow the exception to fail the test
