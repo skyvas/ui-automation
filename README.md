@@ -28,12 +28,13 @@ seleniumbase/
 ```
 
 ## Key Components
-Modular Test Structure: Organized directories for better test management.
-Page Object Model (POM): Simplifies test script maintenance.
-Custom Utilities and Exceptions: Includes reusable utilities and error handling.
-Environment Configurations: Centralized configuration management with config.properties.
-CI/CD Ready: Integrated GitHub Actions for continuous testing.
-Maven Build Support: Dependency management and profile-based execution.
+- Modular Test Structure: Organized directories for better test management.
+- Page Object Model (POM): Simplifies test script maintenance.
+- Custom Utilities and Exceptions: Includes reusable utilities and error handling.
+- Environment Configurations: Centralized configuration management with config.properties.
+- CI/CD Ready: Integrated GitHub Actions for continuous testing.
+- Maven Build Support: Dependency management.
+- Support for logging with log4j
 
 ### `src/test/resources/config.properties`
 This file contains the configuration settings for the tests, such as URLs, credentials, and environment-specific details (fetched from GitHub Variables)
@@ -110,7 +111,7 @@ IDE (e.g., IntelliJ IDEA, VSCode)
 ### Writing Tests
 
 1. Add a Page Object: Define page-specific elements and actions in src/test/java/pageobjects/.
-2. Write Test Cases:
+2. Write Test Cases.
 3. Smoke test cases: Add to src/test/java/tests/smoke/
 4. Regression test cases: Add to src/test/java/tests/regression/
 5. Utilize helper methods and custom utilities from the utils/ package for consistency.
@@ -122,29 +123,16 @@ Run all tests:
 mvn test
    ```
 
-Run tests with a specific profile:
-   ```bash
-mvn test -Psmoke
-mvn test -Pregression
-   ```
-
 ## CI/CD Integration
 GitHub Actions is used for continuous testing. The pipeline file selenium-ci.yml is located in .github/workflows/.
 
 ### Key Features
-1. Automatic test execution on pull requests.
-2. Notifications for build failures.
-3. To Trigger CI Pipeline
-4. Push changes to the repository.
-5. The pipeline will automatically execute the defined tests.
+- Automatic test execution on pull requests.
+- Notifications for build failures.
+- To Trigger CI Pipeline
+- Push changes to the repository.
+- The pipeline will automatically execute the defined tests.
 
-### Contributing
-
-Contributions to improve this framework are welcomed! Please follow these steps:
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes.
-4. Submit a pull request.
 
 ## Troubleshooting
 
