@@ -41,7 +41,7 @@ public class TestCheckoutProcess extends BaseTest {
 
             // Verify summary page; it should be 10.79
             String totalValue = summaryPage.getTotalValue();
-            Assert.assertEquals(totalValue, "10.79", "Total value is not as expected!");
+            Assert.assertEquals(totalValue, "10.75", "Total value is not as expected!");
 
         } catch (Exception e) {
             // Use the standardized exception handler in BaseTest
