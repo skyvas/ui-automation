@@ -1,9 +1,7 @@
 package base;
 
-import utils.BrowserUtil;
-import utils.ConfigReader;
-import utils.ScreenshotUtil;
-
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -11,45 +9,40 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.testng.annotations.Listeners;
+import utils.BrowserUtil;
+import utils.ConfigReader;
+import utils.ScreenshotUtil;
 
+@Listeners(io.qameta.allure.testng.AllureTestNg.class) // Integrate Allure TestNG Listener
 public class BaseTest {
     protected WebDriver driver;
     protected ConfigReader config;
     protected BrowserUtil browserUtil;
 
-    // Logger instance with protected visibility
+    // Logger instance
     protected static final Logger logger = LogManager.getLogger(BaseTest.class);
 
     @BeforeMethod
     public void setUp() {
-        // Load config
         config = new ConfigReader();
-
-        // Get the headless mode property (defaults to false)
         String isHeadless = System.getProperty("headless", config.getProperty("headless_mode"));
-
-        // Set the ChromeDriver path
         System.setProperty("webdriver.chrome.driver", config.getProperty("chromedriver_path"));
 
-        // Set ChromeOptions for headless mode
         ChromeOptions options = new ChromeOptions();
         if (Boolean.parseBoolean(isHeadless)) {
             options.addArguments("--headless");
-            options.addArguments("--window-size=1920x1080");  // Ensures proper viewport size
-            options.addArguments("--disable-gpu");            // Disable GPU hardware acceleration
-            options.addArguments("--no-sandbox");            // Improve stability in headless mode
+            options.addArguments("--window-size=1920x1080");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--no-sandbox");
         } else {
-            options.addArguments("--start-maximized");      // Maximize window in non-headless mode
+            options.addArguments("--start-maximized");
         }
 
-        // Initialize the ChromeDriver with options
         driver = new ChromeDriver(options);
-        browserUtil = new BrowserUtil(driver);  // Initialize BrowserUtil
-
-        // Log to indicate headless or non-headless mode
+        browserUtil = new BrowserUtil(driver);
         logger.info("Running in " + (Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal") + " mode.");
+        logStep("Setup Browser");
     }
 
     @AfterMethod
@@ -57,33 +50,24 @@ public class BaseTest {
         if (driver != null) {
             driver.quit();
             logger.info("Browser closed.");
+            logStep("Teardown Browser");
         }
     }
 
-    /**
-     * Handles exceptions in test methods, logs the error, and captures a screenshot.
-     *
-     * @param methodName the name of the failing test method
-     * @param e          the exception that occurred
-     */
-    protected void handleTestException(String methodName, Exception e) {
-        // Log the exception
+    @Attachment(value = "Page Screenshot", type = "image/png")
+    public byte[] attachScreenshot() {
+        return ScreenshotUtil.takeScreenshotAsBytes(driver);
+    }
+
+    @Step("{stepDescription}")
+    public void logStep(String stepDescription) {
+        logger.info(stepDescription);
+    }
+
+    public void handleTestException(String methodName, Exception e) {
         logger.error("Test failed in method: " + methodName);
         logger.error("Error: " + e.getMessage());
-
-        // Define the screenshot path
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/" + "screenshot_"+ methodName + "_" + timestamp + ".png";
-
-        // Capture a screenshot
-        try {
-            ScreenshotUtil.takeScreenshot(driver, screenshotPath);
-            logger.info("Screenshot saved at: " + screenshotPath);
-        } catch (Exception screenshotException) {
-            logger.error("Failed to capture screenshot: " + screenshotException.getMessage());
-        }
-
-        // Rethrow the exception to fail the test
+        attachScreenshot();
         throw new RuntimeException(e);
     }
 }

@@ -40,4 +40,24 @@ public class ScreenshotUtil {
             System.err.println("Failed to save screenshot: " + e.getMessage());
         }
     }
+
+    /**
+     * Captures a screenshot and returns it as a byte array.
+     * This is useful for integrations like Allure reporting.
+     *
+     * @param driver WebDriver instance
+     * @return Screenshot as a byte array
+     */
+    public static byte[] takeScreenshotAsBytes(WebDriver driver) {
+        if (driver instanceof TakesScreenshot) {
+            try {
+                return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            } catch (WebDriverException e) {
+                System.err.println("Failed to capture screenshot as bytes: " + e.getMessage());
+            }
+        } else {
+            System.err.println("WebDriver does not support screenshots.");
+        }
+        return new byte[0]; // Return an empty byte array if capturing fails
+    }
 }
