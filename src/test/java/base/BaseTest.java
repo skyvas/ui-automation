@@ -14,6 +14,9 @@ import utils.BrowserUtil;
 import utils.ConfigReader;
 import utils.ScreenshotUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Listeners(io.qameta.allure.testng.AllureTestNg.class) // Integrate Allure TestNG Listener
 public class BaseTest {
     protected WebDriver driver;
@@ -64,10 +67,30 @@ public class BaseTest {
         logger.info(stepDescription);
     }
 
-    public void handleTestException(String methodName, Exception e) {
+    /**
+     * Handles exceptions in test methods, logs the error, and captures a screenshot.
+     *
+     * @param methodName the name of the failing test method
+     * @param e          the exception that occurred
+     */
+    protected void handleTestException(String methodName, Exception e) {
+        // Log the exception
         logger.error("Test failed in method: " + methodName);
         logger.error("Error: " + e.getMessage());
-        attachScreenshot();
+
+        // Define the screenshot path
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/" + "screenshot_"+ methodName + "_" + timestamp + ".png";
+
+        // Capture a screenshot
+        try {
+            ScreenshotUtil.takeScreenshot(driver, screenshotPath);
+            logger.info("Screenshot saved at: " + screenshotPath);
+        } catch (Exception screenshotException) {
+            logger.error("Failed to capture screenshot: " + screenshotException.getMessage());
+        }
+
+        // Rethrow the exception to fail the test
         throw new RuntimeException(e);
     }
 }

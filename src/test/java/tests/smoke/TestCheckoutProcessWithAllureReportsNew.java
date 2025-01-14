@@ -27,7 +27,7 @@ public class TestCheckoutProcessWithAllureReportsNew extends BaseTest {
 
     @Test(description = "End-to-end checkout process with logs and Allure reporting")
     @Description("This test performs the end-to-end checkout process and verifies the total.")
-    public void testCheckoutProcessWithAllureReports() {
+    public void testCheckoutProcessWithAllureReportsNew() {
         try {
             logStep("Navigating to URL: " + config.getProperty("test_url"));
             browserUtil.navigateTo(config.getProperty("test_url"));
