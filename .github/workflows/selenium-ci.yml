@@ -90,4 +90,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-reports
-          path: target/site/
+          path: target/site/allure-maven-plugin
