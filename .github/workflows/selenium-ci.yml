@@ -34,13 +34,14 @@ jobs:
       - name: Install ChromeDriver
         run: sudo apt-get install -y chromium-chromedriver
 
-      - name: Set ChromeDriver path
-        run: echo "chromedriver_path=$(which chromedriver)" >> src/test/resources/config.properties
-
       # Step 4: Remove config.properties if it exists
       - name: Remove existing config.properties
         run: |
           rm -f src/test/resources/config.properties
+      
+
+      - name: Set ChromeDriver path
+        run: echo "chromedriver_path=$(which chromedriver)" >> src/test/resources/config.properties
 
       # Step 5: Create config.properties dynamically
       - name: Create config.properties
