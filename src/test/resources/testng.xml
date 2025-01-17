@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Dry Run Suite" parallel="tests" thread-count="1">
-    <listeners>
-        <listener class-name="io.qameta.allure.testng.AllureTestNg"></listener>
-    </listeners>
 
     <test name="Smoke Test Suite">
         <packages>
@@ -19,7 +16,7 @@
 
     <test name="TestCheckoutProcessWithLogs">
         <classes>
-            <class name="tests.smoke.TestCheckoutProcessWithLogs"></class>
+            <class name="tests.smoke.TestCheckoutProcessWithLogs"/>
         </classes>
         </test>
 
