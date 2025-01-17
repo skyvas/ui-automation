@@ -46,6 +46,7 @@ public class TestCheckoutProcess extends BaseTest {
         } catch (Exception e) {
             // Use the standardized exception handler in BaseTest
             handleTestException(new Object() {}.getClass().getEnclosingMethod().getName(), e);
+            throw e;
         }
     }
 }

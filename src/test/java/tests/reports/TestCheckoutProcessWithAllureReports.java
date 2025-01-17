@@ -1,15 +1,8 @@
-package tests.smoke;
+package tests.reports;
 
 import base.BaseTest;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.TmsLink;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pageobjects.LoginPage;
@@ -18,16 +11,11 @@ import pageobjects.CartPage;
 import pageobjects.CheckoutPage;
 import pageobjects.SummaryPage;
 
-@Epic("E-Commerce Platform")
-@Feature("Checkout Flow")
-@Story("End-to-End Checkout Process")
-@Severity(SeverityLevel.CRITICAL)
-@TmsLink("TMS-123")  // Replace with your actual TMS link
-public class TestCheckoutProcessWithAllureReportsNew extends BaseTest {
+public class TestCheckoutProcessWithAllureReports extends BaseTest {
 
     @Test(description = "End-to-end checkout process with logs and Allure reporting")
     @Description("This test performs the end-to-end checkout process and verifies the total.")
-    public void testCheckoutProcessWithAllureReportsNew() {
+    public void testCheckoutProcessWithAllureReports() {
         try {
             logStep("Navigating to URL: " + config.getProperty("test_url"));
             browserUtil.navigateTo(config.getProperty("test_url"));
@@ -55,6 +43,7 @@ public class TestCheckoutProcessWithAllureReportsNew extends BaseTest {
         } catch (Exception e) {
             logger.error("Error during checkout process: ", e);
             handleTestException(new Object() {}.getClass().getEnclosingMethod().getName(), e);
+            throw e;
         }
     }
 

@@ -66,6 +66,7 @@ public class TestCheckoutProcessWithLogs extends BaseTest {
         } catch (Exception e) {
             logger.error("Error during checkout process: ", e);
             handleTestException(new Object() {}.getClass().getEnclosingMethod().getName(), e);
+            throw e;
         }
     }
 }

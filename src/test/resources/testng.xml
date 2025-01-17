@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Allure Selenium Suite" parallel="tests" thread-count="2">
+<suite name="Dry Run Suite" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"></listener>
     </listeners>
 
     <parameter name="allure.results.directory" value="${project.build.directory}/allure-results"/>
 
-    <test name="Checkout Test with Allure">
-        <classes>
-            <class name="tests.smoke.TestCheckoutProcessWithAllureReports"></class>
-        </classes>
+    <test name="Smoke Test Suite">
+        <packages>
+            <package name="tests.smoke.*"/>
+        </packages>
     </test>
+
+    <test name="Reports Test Suite">
+        <packages>
+            <package name="tests.reports.*"/>
+        </packages>
+
+
+    </test>
+
+    <test name="TestCheckoutProcessWithLogs">
+        <classes>
+            <class name="tests.smoke.TestCheckoutProcessWithLogs"></class>
+        </classes>
+        </test>
 </suite>
