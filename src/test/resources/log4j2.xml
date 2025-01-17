@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
+<Configuration status="INFO" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %C{0} - %X{testMethod} - %M - %msg%n"</Property>
+        <Property name="BASE_PATH">logs</Property>
+        <Property name="FILE_NAME">automation</Property>
+    </Properties>
     <Appenders>
-        <!-- Console Appender -->
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{10} - %M - %msg%n" />
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
-        <!-- File Appender -->
-        <File name="File" fileName="logs/automation.log">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{10} - %M - %msg%n" />
-        </File>
+
+        <RollingFile name="FileAppender"
+                     fileName="${BASE_PATH}/${FILE_NAME}.log"
+                     filePattern="${BASE_PATH}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
     </Appenders>
+
     <Loggers>
-        <!-- Root Logger -->
-        <Root level="info">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="File" />
+        <!-- Application Loggers -->
+        <Logger name="tests" level="DEBUG" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </Logger>
+
+        <!-- Framework Loggers -->
+        <Logger name="org.testng" level="INFO" additivity="false">
+            <AppenderRef ref="ConsoleAppender"/>
+        </Logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
         </Root>
     </Loggers>
 </Configuration>

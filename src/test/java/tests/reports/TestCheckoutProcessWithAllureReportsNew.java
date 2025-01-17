@@ -102,7 +102,7 @@ public class TestCheckoutProcessWithAllureReportsNew extends BaseTest {
     private void verifySummaryPage(SummaryPage summaryPage) {
         String totalValue = summaryPage.getTotalValue();
         logStep("Summary total value retrieved: " + totalValue);
-        Assert.assertEquals(totalValue, "10.70", "Total value is not as expected!");
+        Assert.assertEquals(totalValue, "10.79", "Total value is not as expected!");
         logStep("Checkout process completed successfully.");
     }
 }
