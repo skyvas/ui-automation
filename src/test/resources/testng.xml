@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Dry Run Suite" parallel="tests" thread-count="1">
+<suite name="Dry Run Suite" parallel="tests" thread-count="2">
 
     <test name="Smoke Test Suite">
         <packages>
@@ -14,10 +14,10 @@
         </packages>
     </test>
 
-    <test name="TestCheckoutProcessWithLogs">
-        <classes>
-            <class name="tests.smoke.TestCheckoutProcessWithLogs"/>
-        </classes>
-        </test>
+<!--    <test name="TestCheckoutProcessWithLogs">-->
+<!--        <classes>-->
+<!--            <class name="tests.smoke.TestCheckoutProcessWithLogs"/>-->
+<!--        </classes>-->
+<!--        </test>-->
 
 </suite>
