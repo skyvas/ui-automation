@@ -7,6 +7,9 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.safari.SafariDriver;
 import org.slf4j.MDC;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -27,77 +30,95 @@ import java.util.Date;
 @Listeners(io.qameta.allure.testng.AllureTestNg.class)
 public class BaseTest {
 
-    // WebDriver instance to interact with the browser
-    protected WebDriver driver;
-
-    // Configuration reader to fetch properties from the configuration files
-    protected ConfigReader config;
-
-    // Utility class for browser-related actions
-    protected BrowserUtil browserUtil;
-
-    // Logger instance for logging test events and actions
+    protected WebDriver driver;  // WebDriver instance to interact with the browser
+    protected ConfigReader config;  // Configuration reader to fetch properties from configuration files
+    protected BrowserUtil browserUtil;  // Utility class for browser-related actions
     protected static final Logger logger = LogManager.getLogger(BaseTest.class);
 
     /**
      * Setup method executed before each test method.
-     * It initializes the WebDriver, configuration, and browser options based on the test environment.
+     * Initializes the WebDriver, configuration, and browser options based on the test environment.
      */
     @BeforeMethod
     public void setUp() {
         // Load configuration properties
         config = new ConfigReader();
 
-        // Determine if the browser should run in headless mode, defaulting to value from configuration or system property
+        // Fetch browser type from configuration or system property
+        String browser = System.getProperty("browser", config.getProperty("browser")).toLowerCase();
         String isHeadless = System.getProperty("headless", config.getProperty("headless_mode"));
 
-        // Set the path for ChromeDriver
-        System.setProperty("webdriver.chrome.driver", config.getProperty("chromedriver_path"));
-
-        // Configure ChromeOptions based on headless mode
-        ChromeOptions options = new ChromeOptions();
-        if (Boolean.parseBoolean(isHeadless)) {
-            options.addArguments("--headless", "--window-size=1920x1080", "--disable-gpu", "--no-sandbox");
-        } else {
-            options.addArguments("--start-maximized");
+        // Initialize WebDriver based on the browser type
+        switch (browser) {
+            case "chrome":
+                driver = initChromeDriver(Boolean.parseBoolean(isHeadless));
+                break;
+            case "edge":
+                driver = initEdgeDriver();
+                break;
+            case "safari":
+                driver = initSafariDriver();
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported browser: " + browser);
         }
 
         // Capture the test class name for logging
         String testName = this.getClass().getSimpleName();
-
-        // Store the test name in MDC (Mapped Diagnostic Context) for structured logging
-        MDC.put("testName", testName);
-        // Log the start of test execution
+        MDC.put("testName", testName);  // Store the test name in MDC for structured logging
         System.out.println("\n" + " Test execution started for: " + testName);
 
-        // Initialize the WebDriver with the specified options
-        driver = new ChromeDriver(options);
+        browserUtil = new BrowserUtil(driver);  // Initialize BrowserUtil with WebDriver
+        logger.info("Running tests on {} browser in {} mode.", browser, Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal");
+    }
 
-        // Initialize the BrowserUtil with the WebDriver
-        browserUtil = new BrowserUtil(driver);
+    /**
+     * Initialize ChromeDriver with optional headless mode.
+     */
+    private WebDriver initChromeDriver(boolean isHeadless) {
+        System.setProperty("webdriver.chrome.driver", config.getProperty("chromedriver_path"));
+        ChromeOptions options = new ChromeOptions();
+        if (isHeadless) {
+            options.addArguments("--headless", "--window-size=1920x1080", "--disable-gpu", "--no-sandbox");
+        } else {
+            options.addArguments("--start-maximized");
+        }
+        return new ChromeDriver(options);
+    }
 
-        // Log the current execution mode (headless or normal)
-        logger.info("Running in {} mode.", Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal");
+    /**
+     * Initialize EdgeDriver.
+     */
+    private WebDriver initEdgeDriver() {
+        System.setProperty("webdriver.edge.driver", config.getProperty("edgedriver_path"));
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments("--start-maximized");
+        return new EdgeDriver(options);
+    }
+
+    /**
+     * Initialize SafariDriver.
+     */
+    private WebDriver initSafariDriver() {
+        // Safari WebDriver requires no additional configuration on macOS
+        return new SafariDriver();
     }
 
     /**
      * Teardown method executed after each test method.
-     * It performs browser cleanup, quits the WebDriver, and logs the completion.
+     * Cleans up the browser session and logs completion.
      */
     @AfterMethod
     public void tearDown() {
         if (driver != null) {
-            // Quit the WebDriver, closing the browser
-            driver.quit();
+            driver.quit();  // Quit WebDriver, closing the browser
             logStep("Browser teardown complete.");
-
-            // Clear the MDC (Mapped Diagnostic Context) data to avoid memory leaks
-            MDC.clear();
+            MDC.clear();  // Clear MDC data to avoid memory leaks
         }
     }
 
     /**
-     * LogStep method logs specific steps during test execution.
+     * Logs specific steps during test execution.
      *
      * @param stepDescription A description of the step to be logged
      */
@@ -107,7 +128,7 @@ public class BaseTest {
     }
 
     /**
-     * handleTestException method captures a screenshot and logs the details of a test failure.
+     * Handles test exceptions by capturing screenshots and logging the details.
      *
      * @param methodName The name of the test method where the failure occurred
      * @param e          The exception that caused the test failure
@@ -115,22 +136,15 @@ public class BaseTest {
      */
     @Attachment(value = "Page Screenshot", type = "image/png")
     protected byte[] handleTestException(String methodName, Exception e) {
-        // Log the error along with the method name and exception details
         logger.error("Test failed in method: {}", methodName, e);
-
-        // Generate a timestamp for the screenshot file
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-        // Define the path for the screenshot
-        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/screenshot_" + methodName + "_" + timestamp + ".png";
+        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/" + timestamp + "_screenshot_" + methodName + "-FAILED" + ".png";
 
         try {
-            // Capture the screenshot using ScreenshotUtil
             ScreenshotUtil.takeScreenshot(driver, screenshotPath);
             logger.info("Screenshot saved at: {}", screenshotPath);
-            return Files.readAllBytes(Paths.get(screenshotPath));  // Return the screenshot as byte array
+            return Files.readAllBytes(Paths.get(screenshotPath));
         } catch (Exception screenshotException) {
-            // Log if the screenshot capture fails
             logger.error("Failed to capture screenshot: {}", screenshotException.getMessage());
         }
 

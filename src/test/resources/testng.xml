@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Dry Run Suite" parallel="tests" thread-count="2">
+<suite name="Dry Run Suite" parallel="methods" thread-count="2">
+
+    <test name="ChromeTests">
+        <parameter name="browser" value="chrome" />
+        <classes>
+            <class name="tests.reports.TestCheckoutProcessWithAllureReportsNew" />
+        </classes>
+    </test>
+    <test name="EdgeTests">
+        <parameter name="browser" value="edge" />
+        <classes>
+            <class name="tests.reports.TestCheckoutProcessWithAllureReportsNew" />
+        </classes>
+    </test>
+    <test name="SafariTests">
+        <parameter name="browser" value="safari" />
+        <classes>
+            <class name="tests.reports.TestCheckoutProcessWithAllureReportsNew" />
+        </classes>
+    </test>
 
     <test name="Smoke Test Suite">
         <packages>
