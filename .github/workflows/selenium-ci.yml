@@ -1,4 +1,4 @@
-name: Selenium CI
+name: Multi Browser CI
 
 on:
   push:
