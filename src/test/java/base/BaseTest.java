@@ -122,7 +122,7 @@ public class BaseTest {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
         // Define the path for the screenshot
-        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/screenshot_" + methodName + "_" + timestamp + ".png";
+        String screenshotPath = System.getProperty("user.dir") + "/target/screenshots/" + timestamp + "_screenshot_" + methodName + "-" + "FAILED" + ".png";
 
         try {
             // Capture the screenshot using ScreenshotUtil
