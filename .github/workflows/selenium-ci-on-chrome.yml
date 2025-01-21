@@ -1,4 +1,4 @@
-name: Selenium CI
+name: Selenium CI on Chrome
 
 on:
   push:

@@ -24,12 +24,15 @@ jobs:
           java-version: '23'
           distribution: 'temurin'
 
-      # Step 3: Download and Install EdgeDriver
-      - name: Install EdgeDriver
+      # Step 3: Install Microsoft Edge and Download EdgeDriver
+      - name: Install Edge and Download EdgeDriver
         run: |
           choco install -y microsoft-edge
-          choco install -y edgedriver
-          edgedriver --version
+          EDGE_VERSION=$(powershell "(Get-Item 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe').VersionInfo.ProductVersion")
+          EDGE_DRIVER_VERSION=${EDGE_VERSION%.*}
+          curl -sS -o msedgedriver.zip "https://msedgedriver.azureedge.net/${EDGE_DRIVER_VERSION}/edgedriver_win64.zip"
+          tar -xf msedgedriver.zip -C $Env:USERPROFILE
+          echo "edgedriver_path=$Env:USERPROFILE\\msedgedriver.exe" >> src/test/resources/config.properties
 
       # Step 4: Create config.properties dynamically
       - name: Create config.properties
@@ -39,7 +42,6 @@ jobs:
           echo "headless_mode=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
           echo "test_url=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
           echo "browser=edge" >> src/test/resources/config.properties
-          echo "edgedriver_path=C:\\ProgramData\\chocolatey\\bin\\msedgedriver.exe" >> src/test/resources/config.properties
 
       # Step 5: Cache Maven dependencies
       - name: Cache Maven dependencies
