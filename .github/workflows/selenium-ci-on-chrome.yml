@@ -1,0 +1,95 @@
+name: Selenium CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test-on-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Java
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '23'
+          distribution: 'temurin'
+
+      # Step 3: Install Chrome and ChromeDriver
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          # Fetch Chrome version
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1,2)
+      - name: Install ChromeDriver
+        run: sudo apt-get install -y chromium-chromedriver
+
+      # Step 4: Set ChromeDriver path
+      - name: Set ChromeDriver path
+        run: echo "chromedriver_path=$(which chromedriver)" >> src/test/resources/config.properties
+
+      # Step 5: Create config.properties dynamically
+      - name: Create config.properties
+        run: |
+          echo "username=${{ secrets.USERNAME }}" >> src/test/resources/config.properties
+          echo "password=${{ secrets.PASSWORD }}" >> src/test/resources/config.properties
+          echo "headless_mode=${{ secrets.HEADLESS_MODE }}" >> src/test/resources/config.properties
+          echo "test_url=${{ secrets.TEST_URL }}" >> src/test/resources/config.properties
+          echo "browser=chrome" >> src/test/resources/config.properties
+
+      # Step 6: Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 7: Install Maven dependencies
+      - name: Install Dependencies
+        run: mvn install
+
+      # Step 8: Run Selenium tests
+      - name: Run Tests
+        run: mvn test
+
+      # Step 9: Generate Allure reports after tests
+      - name: Generate Allure Reports
+        if: always()
+        run: |
+          mvn allure:report
+
+      # Step 10: Upload Surefire reports as artifacts
+      - name: Upload Surefire reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
+
+      # Step 11: Upload Screenshots as artifacts only if not empty
+      - name: Upload Screenshots as artifacts only if not empty
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: target/screenshots
+
+      # Step 12: Upload Allure reports as artifacts
+      - name: Upload Allure reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-reports
+          path: target/allure-reports

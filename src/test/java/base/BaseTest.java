@@ -4,9 +4,8 @@ import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.MDC;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -14,6 +13,12 @@ import org.testng.annotations.Listeners;
 import utils.BrowserUtil;
 import utils.ConfigReader;
 import utils.ScreenshotUtil;
+
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -48,36 +53,48 @@ public class BaseTest {
         // Load configuration properties
         config = new ConfigReader();
 
-        // Determine if the browser should run in headless mode, defaulting to value from configuration or system property
+        // Determine browser type from configuration
+        String browser = config.getProperty("browser").toLowerCase();
+
+        // Determine if the browser should run in headless mode
         String isHeadless = System.getProperty("headless", config.getProperty("headless_mode"));
 
-        // Set the path for ChromeDriver
-        System.setProperty("webdriver.chrome.driver", config.getProperty("chromedriver_path"));
+        // Set up WebDriver based on the browser type
+        switch (browser) {
+            case "chrome":
+                System.setProperty("webdriver.chrome.driver", config.getProperty("chromedriver_path"));
+                ChromeOptions chromeOptions = new ChromeOptions();
+                if (Boolean.parseBoolean(isHeadless)) {
+                    chromeOptions.addArguments("--headless", "--window-size=1920x1080", "--disable-gpu", "--no-sandbox");
+                } else {
+                    chromeOptions.addArguments("--start-maximized");
+                }
+                driver = new ChromeDriver(chromeOptions);
+                break;
 
-        // Configure ChromeOptions based on headless mode
-        ChromeOptions options = new ChromeOptions();
-        if (Boolean.parseBoolean(isHeadless)) {
-            options.addArguments("--headless", "--window-size=1920x1080", "--disable-gpu", "--no-sandbox");
-        } else {
-            options.addArguments("--start-maximized");
+            case "safari":
+                driver = new SafariDriver();
+                break;
+
+            case "edge":
+                System.setProperty("webdriver.edge.driver", config.getProperty("edgedriver_path"));
+                EdgeOptions edgeOptions = new EdgeOptions();
+                if (Boolean.parseBoolean(isHeadless)) {
+                    edgeOptions.addArguments("--headless", "--window-size=1920x1080");
+                }
+                driver = new EdgeDriver(edgeOptions);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported browser set in config.properties file: " + browser);
         }
 
-        // Capture the test class name for logging
+        // Existing setup logic
         String testName = this.getClass().getSimpleName();
-
-        // Store the test name in MDC (Mapped Diagnostic Context) for structured logging
         MDC.put("testName", testName);
-        // Log the start of test execution
         System.out.println("\n" + " Test execution started for: " + testName);
-
-        // Initialize the WebDriver with the specified options
-        driver = new ChromeDriver(options);
-
-        // Initialize the BrowserUtil with the WebDriver
         browserUtil = new BrowserUtil(driver);
-
-        // Log the current execution mode (headless or normal)
-        logger.info("Running in {} mode.", Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal");
+        logger.info("Running tests on browser: {} in {} mode.", browser, Boolean.parseBoolean(isHeadless) ? "Headless" : "Normal");
     }
 
     /**
