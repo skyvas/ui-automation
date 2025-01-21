@@ -28,11 +28,12 @@ jobs:
       - name: Install Edge and Download EdgeDriver
         run: |
           choco install -y microsoft-edge
-          EDGE_VERSION=$(powershell "(Get-Item 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe').VersionInfo.ProductVersion")
-          EDGE_DRIVER_VERSION=${EDGE_VERSION%.*}
-          curl -sS -o msedgedriver.zip "https://msedgedriver.azureedge.net/${EDGE_DRIVER_VERSION}/edgedriver_win64.zip"
-          tar -xf msedgedriver.zip -C $Env:USERPROFILE
-          echo "edgedriver_path=$Env:USERPROFILE\\msedgedriver.exe" >> src/test/resources/config.properties
+          $EdgeVersion = (Get-Item 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe').VersionInfo.ProductVersion
+          $EdgeDriverVersion = $EdgeVersion.Substring(0, $EdgeVersion.LastIndexOf('.'))
+          Write-Host "Detected Edge version: $EdgeDriverVersion"
+          Invoke-WebRequest -Uri "https://msedgedriver.azureedge.net/$EdgeDriverVersion/edgedriver_win64.zip" -OutFile "msedgedriver.zip"
+          Expand-Archive -Path "msedgedriver.zip" -DestinationPath "$Env:USERPROFILE"
+          echo "edgedriver_path=$Env:USERPROFILE\msedgedriver.exe" >> src/test/resources/config.properties
 
       # Step 4: Create config.properties dynamically
       - name: Create config.properties
