@@ -3,10 +3,10 @@ name: Selenium CI on Edge
 on:
   push:
     branches:
-      - main
+      - branchname
   pull_request:
     branches:
-      - main
+      - branchname
 
 jobs:
   build-and-test:
