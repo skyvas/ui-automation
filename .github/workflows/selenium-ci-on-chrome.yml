@@ -27,6 +27,7 @@ jobs:
       # Step 3: Install Chrome and ChromeDriver
       - name: Install Chrome
         run: |
+          export CI=true
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
           # Fetch Chrome version
