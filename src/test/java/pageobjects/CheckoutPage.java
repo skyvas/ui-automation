@@ -1,24 +1,26 @@
 package pageobjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.WaitUtil;
-import utils.JsonUtil;
-import org.json.JSONObject;
 
-public class CheckoutPage {
-    private WebDriver driver;
-    private WaitUtil waitUtil;
-    private JSONObject locators;
+public class CheckoutPage extends BasePage {
 
+    /**
+     * Constructor to initialize WebDriver and load locators for CheckoutPage.
+     *
+     * @param driver WebDriver instance
+     */
     public CheckoutPage(WebDriver driver) {
-        this.driver = driver;
-        this.waitUtil = new WaitUtil(driver);
-        this.locators = JsonUtil.loadJson("CheckoutPage.json");
+        super(driver);  // Inherit WebDriver and all functionality from BasePage
     }
 
-    private By getLocator(String key) {
-        return By.cssSelector(locators.getString(key));
+    /**
+     * Override the method to specify the JSON file for this page.
+     *
+     * @return The name of the JSON file containing locators for this page.
+     */
+    @Override
+    protected String getPageJsonFileName() {
+        return "CheckoutPage.json";  // CheckoutPage-specific JSON file for locators
     }
 
     /**
@@ -27,7 +29,7 @@ public class CheckoutPage {
      * @param firstName The first name to enter
      */
     public void enterFirstName(String firstName) {
-        waitUtil.waitForElementVisible(getLocator("firstNameField")).sendKeys(firstName);
+        waitForElementToBeVisible("firstNameField", "css").sendKeys(firstName);  // Uses inherited method from BasePage
     }
 
     /**
@@ -36,7 +38,7 @@ public class CheckoutPage {
      * @param lastName The last name to enter
      */
     public void enterLastName(String lastName) {
-        waitUtil.waitForElementVisible(getLocator("lastNameField")).sendKeys(lastName);
+        waitForElementToBeVisible("lastNameField", "css").sendKeys(lastName);  // Uses inherited method from BasePage
     }
 
     /**
@@ -45,13 +47,13 @@ public class CheckoutPage {
      * @param postalCode The postal code to enter
      */
     public void enterPostalCode(String postalCode) {
-        waitUtil.waitForElementVisible(getLocator("postalCodeField")).sendKeys(postalCode);
+        waitForElementToBeVisible("postalCodeField", "css").sendKeys(postalCode);  // Uses inherited method from BasePage
     }
 
     /**
      * Wait for the continue button to be clickable and click it.
      */
     public void clickContinue() {
-        waitUtil.waitForElementClickable(getLocator("continueButton")).click();
+        clickElement("continueButton", "css");  // Uses inherited method from BasePage
     }
 }
