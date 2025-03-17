@@ -1,37 +1,34 @@
 package pageobjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.WaitUtil;
-import utils.JsonUtil;
-import org.json.JSONObject;
 
-public class InventoryPage {
-    private WebDriver driver;
-    private WaitUtil waitUtil;
-    private JSONObject locators;
+public class InventoryPage extends BasePage {
 
+    /**
+     * Constructor to initialize WebDriver and load locators for InventoryPage.
+     *
+     * @param driver WebDriver instance
+     */
     public InventoryPage(WebDriver driver) {
-        this.driver = driver;
-        this.waitUtil = new WaitUtil(driver);
-        this.locators = JsonUtil.loadJson("InventoryPage.json");
+        super(driver);
     }
 
-    private By getLocator(String key) {
-        return By.cssSelector(locators.getString(key));
+    @Override
+    protected String getPageJsonFileName() {
+        return "InventoryPage.json"; // Specifies the JSON locator file for this page
     }
 
     /**
      * Wait for the add-to-cart button to be clickable and click it.
      */
     public void addAnItemToCart() {
-        waitUtil.waitForElementClickable(getLocator("addToCartButton")).click();
+        clickElement("addToCartButton", "css");
     }
 
     /**
      * Wait for the cart link to be clickable and navigate to the cart.
      */
     public void goToCart() {
-        waitUtil.waitForElementClickable(getLocator("cartLink")).click();
+        clickElement("cartLink", "css");
     }
 }

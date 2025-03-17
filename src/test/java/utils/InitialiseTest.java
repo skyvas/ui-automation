@@ -54,7 +54,7 @@ public class InitialiseTest {
                 } else {
                     // Use WebDriverManager for local execution
                     WebDriverManager.chromedriver().setup();
-                    logger.info("Running in local mode.");
+                    logger.info("Running in local mode with Chromedriver.");
                 }
 
                 if (Boolean.parseBoolean(isHeadless)) {
@@ -80,7 +80,7 @@ public class InitialiseTest {
                     logger.info("Running in CI/CD mode with EdgeDriver path: {}", edgeDriverPath);
                 } else {
                     WebDriverManager.edgedriver().setup();
-                    logger.info("Running in local mode.");
+                    logger.info("Running in local mode with Edgedriver.");
                 }
 
                 EdgeOptions edgeOptions = new EdgeOptions();

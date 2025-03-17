@@ -1,30 +1,32 @@
 package pageobjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.WaitUtil;
-import utils.JsonUtil;
-import org.json.JSONObject;
 
-public class CartPage {
-    private WebDriver driver;
-    private WaitUtil waitUtil;
-    private JSONObject locators;
+public class CartPage extends BasePage {
 
+    /**
+     * Constructor to initialize WebDriver and load locators for CartPage.
+     *
+     * @param driver WebDriver instance
+     */
     public CartPage(WebDriver driver) {
-        this.driver = driver;
-        this.waitUtil = new WaitUtil(driver);
-        this.locators = JsonUtil.loadJson("CartPage.json");
+        super(driver);  // Inherit WebDriver and all functionality from BasePage
     }
 
-    private By getLocator(String key) {
-        return By.cssSelector(locators.getString(key));
+    /**
+     * Override the method to specify the JSON file for this page
+     *
+     * @return The name of the JSON file containing locators for this page.
+     */
+    @Override
+    protected String getPageJsonFileName() {
+        return "CartPage.json";  // CartPage-specific JSON file for locators
     }
 
     /**
      * Wait for the checkout button to be visible and then click it.
      */
     public void clickCheckout() {
-        waitUtil.waitForElementClickable(getLocator("checkoutButton")).click();
+        clickElement("checkoutButton", "css");  // Uses the inherited clickElement method from BasePage
     }
 }
