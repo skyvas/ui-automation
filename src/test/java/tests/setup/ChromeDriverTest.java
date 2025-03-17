@@ -1,23 +1,20 @@
 package tests.setup;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import utils.InitialiseTest;
 
-public class ChromeDriverTest {
-    public static void main(String[] args) {
-        // Set the path to the ChromeDriver executable
-        System.setProperty("webdriver.chrome.driver", "C:\\Drivers\\Chrome\\chromedriver.exe");
+public class ChromeDriverTest extends InitialiseTest {
 
-        // Initialize WebDriver
-        WebDriver driver = new ChromeDriver();
-
-        // Open a website
+    @Test
+    public void testGoogleHomePage() {
+        logStep("Navigating to Google.com");
         driver.get("https://www.google.com");
 
-        // Print the title of the page
-        System.out.println("Page title is: " + driver.getTitle());
-
-        // Close the browser
-        driver.quit();
+        logStep("Verifying if Google search bar is present");
+        WebElement searchBox = driver.findElement(By.name("q"));
+        Assert.assertTrue(searchBox.isDisplayed(), "Google search box is not displayed");
     }
 }

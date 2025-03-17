@@ -1,6 +1,6 @@
 package tests.reports;
 
-import base.BaseTest;
+import utils.InitialiseTest;
 import io.qameta.allure.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -15,7 +15,7 @@ import pageobjects.*;
 @Story("End-to-End Checkout Process") // Describes the user story for the test
 @Severity(SeverityLevel.CRITICAL)    // Sets the severity level for the test
 @TmsLink("TMS-123")                  // Links to the corresponding test case in a Test Management System
-public class TestCheckoutProcessWithAllureReportsNew extends BaseTest {
+public class TestCheckoutProcessWithAllureReportsNew extends InitialiseTest {
 
     /**
      * Executes the complete checkout process and verifies the total value on the summary page.

@@ -1,6 +1,6 @@
 package tests.reports;
 
-import base.BaseTest;
+import utils.InitialiseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.testng.Assert;
@@ -11,7 +11,7 @@ import pageobjects.CartPage;
 import pageobjects.CheckoutPage;
 import pageobjects.SummaryPage;
 
-public class TestCheckoutProcessWithAllureReports extends BaseTest {
+public class TestCheckoutProcessWithAllureReports extends InitialiseTest {
 
     @Test(description = "End-to-end checkout process with logs and Allure reporting")
     @Description("This test performs the end-to-end checkout process and verifies the total.")

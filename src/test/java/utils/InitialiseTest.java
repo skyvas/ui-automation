@@ -1,4 +1,4 @@
-package base;
+package utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Attachment;
@@ -10,9 +10,6 @@ import org.slf4j.MDC;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
-import utils.BrowserUtil;
-import utils.ConfigReader;
-import utils.ScreenshotUtil;
 
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,12 +23,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Listeners(io.qameta.allure.testng.AllureTestNg.class)
-public class BaseTest {
+public class InitialiseTest {
 
     protected WebDriver driver;
     protected ConfigReader config;
     protected BrowserUtil browserUtil;
-    protected static final Logger logger = LogManager.getLogger(BaseTest.class);
+    protected static final Logger logger = LogManager.getLogger(InitialiseTest.class);
 
     @BeforeMethod
     public void setUp() {

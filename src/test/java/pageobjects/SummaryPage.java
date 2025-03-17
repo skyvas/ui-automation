@@ -3,24 +3,32 @@ package pageobjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.WaitUtil;
+import utils.JsonUtil;
+import org.json.JSONObject;
 
 public class SummaryPage {
     private WebDriver driver;
-    private WaitUtil waitUtil;  // Add an instance of the WaitUtil class
+    private WaitUtil waitUtil;
+    private JSONObject locators;
 
-    // Constructor to initialize the WebDriver and WaitUtil
     public SummaryPage(WebDriver driver) {
         this.driver = driver;
-        this.waitUtil = new WaitUtil(driver);  // Initialize WaitUtil
+        this.waitUtil = new WaitUtil(driver);
+        this.locators = JsonUtil.loadJson("SummaryPage.json");
     }
 
-    // Locator for the total label div
-    private By totalLabel = By.cssSelector("div.summary_total_label[data-test='total-label']");
+    private By getLocator(String key) {
+        return By.cssSelector(locators.getString(key));
+    }
 
-    // Method to retrieve the total value as a string (without the "Total: $" part)
+    /**
+     * Get the total value from the summary page.
+     *
+     * @return The total value as a string, without the "Total: $" part
+     */
     public String getTotalValue() {
-        waitUtil.waitForElementVisible(totalLabel);  // Add wait before interacting
-        String totalText = driver.findElement(totalLabel).getText();
+        waitUtil.waitForElementVisible(getLocator("totalLabel"));  // Wait for the total label element
+        String totalText = driver.findElement(getLocator("totalLabel")).getText();
         return totalText.replace("Total: $", "").trim();
     }
 }

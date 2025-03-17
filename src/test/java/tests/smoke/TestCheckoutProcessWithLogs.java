@@ -1,6 +1,6 @@
 package tests.smoke;
 
-import base.BaseTest;
+import utils.InitialiseTest;
 import pageobjects.LoginPage;
 import pageobjects.InventoryPage;
 import pageobjects.CartPage;
@@ -10,7 +10,7 @@ import pageobjects.SummaryPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class TestCheckoutProcessWithLogs extends BaseTest {
+public class TestCheckoutProcessWithLogs extends InitialiseTest {
 
     @Test
     public void testCheckoutProcessWithLogs() {
