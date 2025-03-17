@@ -14,7 +14,7 @@
         <maven.compiler.release>17</maven.compiler.release>
         <aspectj.version>1.9.20</aspectj.version>
         <allure.version>2.23.0</allure.version>
-        <selenium.version>4.27.0</selenium.version>
+        <selenium.version>4.29.0</selenium.version>
         <assertj.version>3.26.3</assertj.version>
         <log4j.version>2.20.0</log4j.version>
         <testng.version>7.10.2</testng.version>
@@ -25,6 +25,13 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.7.0</version> <!-- Ensure this is the latest version -->
+            <scope>test</scope>
         </dependency>
 
         <dependency>

@@ -40,7 +40,7 @@ public class WaitUtil {
             InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties");
 
             if (input == null) {
-                System.err.println("Sorry, unable to find config.properties");
+                System.err.println("Unable to find config.properties");
                 return 10; // Return default value if properties file is not found
             }
 
