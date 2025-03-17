@@ -27,7 +27,7 @@ public class LoginPage {
      * @param username The username to enter
      */
     public void enterUsername(String username) {
-        waitUtil.waitForElementVisible(getLocator("usernameField")).sendKeys(username);
+        waitUtil.waitForElementClickable(getLocator("usernameField")).sendKeys(username);
     }
 
     /**
@@ -36,7 +36,7 @@ public class LoginPage {
      * @param password The password to enter
      */
     public void enterPassword(String password) {
-        waitUtil.waitForElementVisible(getLocator("passwordField")).sendKeys(password);
+        waitUtil.waitForElementClickable(getLocator("passwordField")).sendKeys(password);
     }
 
     /**
