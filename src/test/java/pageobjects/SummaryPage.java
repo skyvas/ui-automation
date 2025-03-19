@@ -29,8 +29,8 @@ public class SummaryPage extends BasePage {
      * @return The total value as a string, without the "Total: $" part
      */
     public String getTotalValue() {
-        waitForElementToBeVisible("totalLabel", "css");  // Wait for the total label element
-        String totalText = driver.findElement(getLocator("totalLabel", "css")).getText();
+        waitForElementToBeVisible("totalLabel");  // Wait for the total label element
+        String totalText = driver.findElement(getLocator("totalLabel")).getText();
         return totalText.replace("Total: $", "").trim();
     }
 }

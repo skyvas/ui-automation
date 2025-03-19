@@ -21,7 +21,23 @@ public class BrowserUtil {
         driver.get(url);
     }
 
-    // Refresh the current page
+    /**
+     * Navigate back in the browser history.
+     */
+    public void navigateBack() {
+        driver.navigate().back();
+    }
+
+    /**
+     * Navigate forward in the browser history.
+     */
+    public void navigateForward() {
+        driver.navigate().forward();
+    }
+
+    /**
+     * Refresh the current page.
+     */
     public void refreshPage() {
         driver.navigate().refresh();
     }

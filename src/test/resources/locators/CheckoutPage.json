@@ -1,6 +1,6 @@
 {
-  "firstNameField": "*[data-test='firstName']",
-  "lastNameField": "*[data-test='lastName']",
-  "postalCodeField": "*[data-test='postalCode']",
-  "continueButton": "*[data-test='continue']"
+  "firstNameField": {"type": "css", "value":"*[data-test='firstName']" },
+  "lastNameField": {"type": "css", "value":"*[data-test='lastName']" },
+  "postalCodeField": {"type": "css", "value":"*[data-test='postalCode']" },
+  "continueButton": {"type": "css", "value":"*[data-test='continue']"}
 }

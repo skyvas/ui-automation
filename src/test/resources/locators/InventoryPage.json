@@ -1,4 +1,4 @@
 {
-  "addToCartButton": "*[data-test='add-to-cart-sauce-labs-bike-light']",
-  "cartLink": "*[data-test='shopping-cart-link']"
+  "addToCartButton": {"type": "css", "value":"*[data-test='add-to-cart-sauce-labs-bike-light']"},
+  "cartLink": {"type": "css", "value":"*[data-test='shopping-cart-link']"}
 }

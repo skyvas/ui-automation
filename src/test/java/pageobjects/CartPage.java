@@ -27,6 +27,6 @@ public class CartPage extends BasePage {
      * Wait for the checkout button to be visible and then click it.
      */
     public void clickCheckout() {
-        clickElement("checkoutButton", "css");  // Uses the inherited clickElement method from BasePage
+        clickElement("checkoutButton");  // Uses the inherited clickElement method from BasePage
     }
 }
