@@ -7,12 +7,15 @@ import org.openqa.selenium.WebElement;
 import utils.JsonUtil;
 import utils.LocatorUtil;
 import utils.WaitUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BasePage {
     protected WebDriver driver;
     protected JSONObject locators;
     protected LocatorUtil locatorUtil;
     protected WaitUtil waitUtil;
+    protected static final Logger logger = LogManager.getLogger(BasePage.class);
 
     /**
      * Constructor to initialize WebDriver, LocatorUtil, and the JSON file with locators.
@@ -54,8 +57,10 @@ public class BasePage {
      * @param key The key identifying the locator in JSON.
      */
     public void clickElement(String key) {
+        logger.info("Attempting to click on element: {}", key);  // Log the element being clicked
         By locator = getLocator(key);
         waitUtil.waitForElementToBeClickable(locator).click();
+        logger.info("Clicked on element: {}", key);  // Log successful click
     }
 
     /**
@@ -66,8 +71,11 @@ public class BasePage {
      * @return WebElement once it is visible.
      */
     public WebElement waitForElementToBeVisible(String key) {
+        logger.info("Waiting for element to be visible: {}", key);  // Log the element being waited for
         By locator = getLocator(key);
-        return waitUtil.waitForElementToBeVisible(locator);
+        WebElement element = waitUtil.waitForElementToBeVisible(locator);
+        logger.info("Element visible: {}", key);  // Log when element becomes visible
+        return element;
     }
 
     /**
@@ -78,8 +86,10 @@ public class BasePage {
      * @param text The text to enter.
      */
     public void sendKeysToElement(String key, String text) {
+        logger.info("Entering text '{}' into element: {}", text, key);  // Log text entry
         WebElement element = waitForElementToBeVisible(key);
         element.sendKeys(text);
+        logger.info("Text '{}' entered into element: {}", text, key);  // Log successful text entry
     }
 
     /**
@@ -90,8 +100,11 @@ public class BasePage {
      * @return The extracted text.
      */
     public String getElementText(String key) {
+        logger.info("Retrieving text from element: {}", key);  // Log text retrieval
         WebElement element = waitForElementToBeVisible(key);
-        return element.getText();
+        String text = element.getText();
+        logger.info("Retrieved text from element {}: {}", key, text);  // Log the text retrieved
+        return text;
     }
 
     /**
@@ -102,9 +115,11 @@ public class BasePage {
      * @param text The text to enter after clearing.
      */
     public void clearAndSendKeys(String key, String text) {
+        logger.info("Clearing and entering text '{}' into element: {}", text, key);  // Log clearing and text entry
         WebElement element = waitForElementToBeVisible(key);
         element.clear();
         element.sendKeys(text);
+        logger.info("Text '{}' entered into element after clearing: {}", text, key);  // Log successful text entry
     }
 
     /**
@@ -115,10 +130,14 @@ public class BasePage {
      * @return True if the element is visible, false otherwise.
      */
     public boolean isElementPresent(String key) {
+        logger.info("Checking if element is present: {}", key);  // Log element presence check
         try {
             WebElement element = waitForElementToBeVisible(key);
-            return element.isDisplayed();
+            boolean isDisplayed = element.isDisplayed();
+            logger.info("Element {} is displayed: {}", key, isDisplayed);  // Log the result of the check
+            return isDisplayed;
         } catch (Exception e) {
+            logger.error("Element {} is not present: {}", key, e.getMessage());  // Log error if element is not found
             return false;
         }
     }
@@ -130,6 +149,6 @@ public class BasePage {
      * @param screenshotName The name for the screenshot file.
      */
     public void takeScreenshot(String screenshotName) {
-        System.out.println("Taking screenshot: " + screenshotName);
+        logger.info("Taking screenshot: {}", screenshotName);  // Log screenshot action
     }
 }
