@@ -35,9 +35,7 @@ public class TestCheckoutProcessWithLogs extends InitialiseTest {
 
             // Login
             logger.info("Entering username and password.");
-            loginPage.enterUsername(config.getProperty("username"));
-            loginPage.enterPassword(config.getProperty("password"));
-            loginPage.clickLogin();
+            loginPage.login();
             logger.info("Login button clicked.");
 
             // Add item to cart
