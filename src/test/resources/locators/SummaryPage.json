@@ -1,3 +1,3 @@
 {
-  "totalLabel": "div.summary_total_label[data-test='total-label']"
+  "totalLabel": {"type": "css", "value":"div.summary_total_label[data-test='total-label']"}
 }

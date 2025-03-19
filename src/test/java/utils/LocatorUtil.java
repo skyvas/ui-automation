@@ -1,10 +1,9 @@
 package utils;
 
-import org.openqa.selenium.By;
 import org.json.JSONObject;
+import org.openqa.selenium.By;
 
 public class LocatorUtil {
-
     private JSONObject locators;
 
     public LocatorUtil(JSONObject locators) {
@@ -12,38 +11,34 @@ public class LocatorUtil {
     }
 
     /**
-     * Retrieves a Selenium locator based on key and type.
+     * Retrieves the locator by extracting its type and value from JSON.
      *
-     * @param key The key used to fetch the locator value from JSON.
-     * @param locatorType The type of locator (e.g., "css", "xpath", "id", etc.).
-     * @return The corresponding Selenium By locator.
+     * @param key The key identifying the locator in JSON.
+     * @return A By object representing the locator.
      */
-    public By getLocator(String key, String locatorType) {
-        String locatorValue = locators.optString(key, "");
-
-        if (locatorValue.isEmpty()) {
-            throw new IllegalArgumentException("Locator key not found: " + key);
+    public By getLocator(String key) {
+        if (!locators.has(key)) {
+            throw new IllegalArgumentException("Locator key not found in JSON: " + key);
         }
 
-        switch (locatorType.toLowerCase()) {
-            case "css":
-                return By.cssSelector(locatorValue);
-            case "xpath":
-                return By.xpath(locatorValue);
-            case "id":
-                return By.id(locatorValue);
-            case "name":
-                return By.name(locatorValue);
-            case "classname":
-                return By.className(locatorValue);
-            case "tagname":
-                return By.tagName(locatorValue);
-            case "linktext":
-                return By.linkText(locatorValue);
-            case "partiallinktext":
-                return By.partialLinkText(locatorValue);
-            default:
-                throw new IllegalArgumentException("Invalid locator type: " + locatorType);
+        JSONObject locatorData = locators.getJSONObject(key);
+        String locatorType = locatorData.getString("type");
+        String locatorValue = locatorData.getString("value");
+
+        return getBy(locatorType, locatorValue);
+    }
+
+    private By getBy(String type, String value) {
+        switch (type.toLowerCase()) {
+            case "id": return By.id(value);
+            case "name": return By.name(value);
+            case "css": return By.cssSelector(value);
+            case "xpath": return By.xpath(value);
+            case "class": return By.className(value);
+            case "tag": return By.tagName(value);
+            case "linktext": return By.linkText(value);
+            case "partiallinktext": return By.partialLinkText(value);
+            default: throw new IllegalArgumentException("Unsupported locator type: " + type);
         }
     }
 }

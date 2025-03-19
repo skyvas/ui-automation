@@ -16,14 +16,15 @@ public class BasePage {
 
     /**
      * Constructor to initialize WebDriver, LocatorUtil, and the JSON file with locators.
+     * The locators are loaded from a JSON file specific to each page.
      *
      * @param driver WebDriver instance
      */
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.locators = JsonUtil.loadJson(getPageJsonFileName());
-        this.locatorUtil = new LocatorUtil(locators);
-        this.waitUtil = new WaitUtil(driver);
+        this.locators = JsonUtil.loadJson(getPageJsonFileName());  // Load locators from JSON
+        this.locatorUtil = new LocatorUtil(locators);  // Initialize locator utility
+        this.waitUtil = new WaitUtil(driver);  // Initialize wait utility
     }
 
     /**
@@ -32,92 +33,90 @@ public class BasePage {
      * @return JSON file name for the page locators.
      */
     protected String getPageJsonFileName() {
-        return "defaultPage.json";
+        return "defaultPage.json";  // Default JSON file, overridden in child classes
     }
 
     /**
-     * Retrieve the locator based on key and type.
+     * Retrieve the locator based on the key from the JSON file.
+     * The locator type (CSS, XPath, ID, etc.) is determined dynamically.
      *
-     * @param key          The key identifying the locator in JSON.
-     * @param locatorType  The type of locator (id, xpath, css, etc.).
+     * @param key The key identifying the locator in JSON.
      * @return A By object representing the locator.
      */
-    public By getLocator(String key, String locatorType) {
-        return locatorUtil.getLocator(key, locatorType);
+    public By getLocator(String key) {
+        return locatorUtil.getLocator(key);
     }
 
     /**
      * Click an element after ensuring it is clickable.
+     * The locator type is automatically determined from JSON.
      *
-     * @param key          The key identifying the locator in JSON.
-     * @param locatorType  The type of locator.
+     * @param key The key identifying the locator in JSON.
      */
-    public void clickElement(String key, String locatorType) {
-        By locator = getLocator(key, locatorType);
+    public void clickElement(String key) {
+        By locator = getLocator(key);
         waitUtil.waitForElementToBeClickable(locator).click();
     }
 
     /**
      * Wait for an element to be visible and return it.
+     * The locator type is automatically determined from JSON.
      *
-     * @param key          The key identifying the locator in JSON.
-     * @param locatorType  The type of locator.
+     * @param key The key identifying the locator in JSON.
      * @return WebElement once it is visible.
      */
-    public WebElement waitForElementToBeVisible(String key, String locatorType) {
-        By locator = getLocator(key, locatorType);
+    public WebElement waitForElementToBeVisible(String key) {
+        By locator = getLocator(key);
         return waitUtil.waitForElementToBeVisible(locator);
     }
 
     /**
      * Enter text into an input field.
+     * The locator type is automatically determined from JSON.
      *
-     * @param key          The key identifying the locator in JSON.
-     * @param locatorType  The type of locator.
-     * @param text         The text to enter.
+     * @param key  The key identifying the locator in JSON.
+     * @param text The text to enter.
      */
-    public void sendKeysToElement(String key, String locatorType, String text) {
-        By locator = getLocator(key, locatorType);
-        WebElement element = waitUtil.waitForElementToBeVisible(locator);
+    public void sendKeysToElement(String key, String text) {
+        WebElement element = waitForElementToBeVisible(key);
         element.sendKeys(text);
     }
 
     /**
      * Retrieve text from an element.
+     * The locator type is automatically determined from JSON.
      *
-     * @param key          The key identifying the locator in JSON.
-     * @param locatorType  The type of locator.
+     * @param key The key identifying the locator in JSON.
      * @return The extracted text.
      */
-    public String getElementText(String key, String locatorType) {
-        By locator = getLocator(key, locatorType);
-        WebElement element = waitUtil.waitForElementToBeVisible(locator);
+    public String getElementText(String key) {
+        WebElement element = waitForElementToBeVisible(key);
         return element.getText();
     }
 
     /**
      * Clear an input field and enter new text.
+     * The locator type is automatically determined from JSON.
      *
-     * @param key          The key identifying the locator in JSON.
-     * @param locatorType  The type of locator.
-     * @param text         The text to enter after clearing.
+     * @param key  The key identifying the locator in JSON.
+     * @param text The text to enter after clearing.
      */
-    public void clearAndSendKeys(String key, String locatorType, String text) {
-        WebElement element = waitForElementToBeVisible(key, locatorType);
+    public void clearAndSendKeys(String key, String text) {
+        WebElement element = waitForElementToBeVisible(key);
         element.clear();
         element.sendKeys(text);
     }
 
     /**
      * Check if an element is present and visible on the page.
+     * The locator type is automatically determined from JSON.
      *
-     * @param key          The key identifying the locator in JSON.
-     * @param locatorType  The type of locator.
+     * @param key The key identifying the locator in JSON.
      * @return True if the element is visible, false otherwise.
      */
-    public boolean isElementPresent(String key, String locatorType) {
+    public boolean isElementPresent(String key) {
         try {
-            WebElement element = waitForElementToBeVisible(key, locatorType);
+            WebElement element = waitForElementToBeVisible(key);
             return element.isDisplayed();
         } catch (Exception e) {
             return false;
@@ -126,32 +125,11 @@ public class BasePage {
 
     /**
      * Capture a screenshot.
+     * (Implementation should be provided by a utility class if needed)
      *
      * @param screenshotName The name for the screenshot file.
      */
     public void takeScreenshot(String screenshotName) {
-        // Implement screenshot capture using a utility class (if available)
         System.out.println("Taking screenshot: " + screenshotName);
-    }
-
-    /**
-     * Navigate back in the browser history.
-     */
-    public void navigateBack() {
-        driver.navigate().back();
-    }
-
-    /**
-     * Navigate forward in the browser history.
-     */
-    public void navigateForward() {
-        driver.navigate().forward();
-    }
-
-    /**
-     * Refresh the current page.
-     */
-    public void refreshPage() {
-        driver.navigate().refresh();
     }
 }

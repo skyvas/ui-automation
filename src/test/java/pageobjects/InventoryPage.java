@@ -22,13 +22,13 @@ public class InventoryPage extends BasePage {
      * Wait for the add-to-cart button to be clickable and click it.
      */
     public void addAnItemToCart() {
-        clickElement("addToCartButton", "css");
+        clickElement("addToCartButton");
     }
 
     /**
      * Wait for the cart link to be clickable and navigate to the cart.
      */
     public void goToCart() {
-        clickElement("cartLink", "css");
+        clickElement("cartLink");
     }
 }

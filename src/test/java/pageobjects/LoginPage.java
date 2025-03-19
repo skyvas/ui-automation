@@ -24,7 +24,7 @@ public class LoginPage extends BasePage {
      * @param username The username to enter
      */
     public void enterUsername(String username) {
-        sendKeysToElement("usernameField", "css", username);
+        sendKeysToElement("usernameField", username);
     }
 
     /**
@@ -33,13 +33,13 @@ public class LoginPage extends BasePage {
      * @param password The password to enter
      */
     public void enterPassword(String password) {
-        sendKeysToElement("passwordField", "css", password);
+        sendKeysToElement("passwordField", password);
     }
 
     /**
      * Click the login button.
      */
     public void clickLogin() {
-        clickElement("loginButton", "css");
+        clickElement("loginButton");
     }
 }

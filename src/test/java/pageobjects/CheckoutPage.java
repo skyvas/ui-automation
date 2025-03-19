@@ -29,7 +29,7 @@ public class CheckoutPage extends BasePage {
      * @param firstName The first name to enter
      */
     public void enterFirstName(String firstName) {
-        waitForElementToBeVisible("firstNameField", "css").sendKeys(firstName);  // Uses inherited method from BasePage
+        waitForElementToBeVisible("firstNameField").sendKeys(firstName);  // Uses inherited method from BasePage
     }
 
     /**
@@ -38,7 +38,7 @@ public class CheckoutPage extends BasePage {
      * @param lastName The last name to enter
      */
     public void enterLastName(String lastName) {
-        waitForElementToBeVisible("lastNameField", "css").sendKeys(lastName);  // Uses inherited method from BasePage
+        waitForElementToBeVisible("lastNameField").sendKeys(lastName);  // Uses inherited method from BasePage
     }
 
     /**
@@ -47,13 +47,13 @@ public class CheckoutPage extends BasePage {
      * @param postalCode The postal code to enter
      */
     public void enterPostalCode(String postalCode) {
-        waitForElementToBeVisible("postalCodeField", "css").sendKeys(postalCode);  // Uses inherited method from BasePage
+        waitForElementToBeVisible("postalCodeField").sendKeys(postalCode);  // Uses inherited method from BasePage
     }
 
     /**
      * Wait for the continue button to be clickable and click it.
      */
     public void clickContinue() {
-        clickElement("continueButton", "css");  // Uses inherited method from BasePage
+        clickElement("continueButton");  // Uses inherited method from BasePage
     }
 }
