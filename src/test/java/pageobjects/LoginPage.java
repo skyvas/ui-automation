@@ -1,8 +1,12 @@
 package pageobjects;
 
 import org.openqa.selenium.WebDriver;
+import utils.ConfigReader;
 
 public class LoginPage extends BasePage {
+
+
+    protected ConfigReader config;
 
     /**
      * Constructor to initialize WebDriver and load locators for LoginPage.
@@ -41,5 +45,18 @@ public class LoginPage extends BasePage {
      */
     public void clickLogin() {
         clickElement("loginButton");
+    }
+
+
+    /**
+     * Method to login. Reads username and password from the config file
+     */
+    public void login() {
+        config = new ConfigReader();
+        String username = config.getProperty("username");
+        String password = config.getProperty("password");
+        enterUsername(username);
+        enterPassword(password);
+        clickLogin();
     }
 }
